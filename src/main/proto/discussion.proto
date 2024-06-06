@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "rs.raf.grpc";
+option java_outer_classname = "DiscussionServiceProto";
+option objc_class_prefix = "HLW";
+
+package discussion;
+
+service Discussion {
+  // Sends a new topic
+  rpc SendNewTopic (TopicRequest) returns (TopicResponse) {}
+
+  // Sends a new comment to a topic
+  rpc SendNewCommentToTopic (CommentRequest) returns (CommentResponse) {}
+
+  // Replies to a comment
+  rpc ReplyToComment (CommentRequest) returns (CommentResponse) {}
+
+  // Updates a comment
+  rpc UpdateMyComment (CommentRequest) returns (CommentResponse) {}
+
+  // Deletes a comment
+  rpc DeleteMyComment (CommentRequest) returns (CommentResponse) {}
+
+  // Gets the list of topics
+  rpc GetTopicsList (TopicsRequest) returns (TopicsResponse) {}
+
+  // Gets the comments of a topic
+  rpc GetTopicComments (TopicCommentsRequest) returns (TopicCommentsResponse) {}
+}
+
+// The request message containing the user's name and the topic.
+message TopicRequest {
+  string user = 1;
+  string topic = 2;
+}
+
+// The response message containing the topic.
+message TopicResponse {
+  string topic = 1;
+}
+
+// The request message containing the user's name, the topic, and the comment.
+message CommentRequest {
+  string user = 1;
+  string topic = 2;
+  string comment = 3;
+}
+
+// The response message containing the comment.
+message CommentResponse {
+  string comment = 1;
+}
+
+// The request message for getting the list of topics.
+message TopicsRequest {}
+
+// The response message containing the list of topics.
+message TopicsResponse {
+  repeated string topics = 1;
+}
+
+// The request message containing the topic for which to get the comments.
+message TopicCommentsRequest {
+  string topic = 1;
+}
+
+// The response message containing the comments of a topic.
+message TopicCommentsResponse {
+  repeated string comments = 1;
+}
