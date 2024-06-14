@@ -5,26 +5,28 @@ import java.util.List;
 
 public class Comment {
 
-    private String user;
+    private static int counter = 0;
+
+    private int id;
     private String message;
     private LocalDateTime timestamp;
     private Comment parent;
     private List<Comment> replies;
 
-    public Comment(String user, String message, LocalDateTime timestamp, Comment parent, List<Comment> replies) {
-        this.user = user;
-        this.message = message;
-        this.timestamp = timestamp;
-        this.parent = parent;
-        this.replies = replies;
+    public Comment(Builder builder) {
+        this.id = ++counter;
+        this.message = builder.message;
+        this.timestamp = builder.timestamp;
+        this.parent = builder.parent;
+        this.replies = builder.replies;
     }
 
-    public String getUser() {
-        return user;
+    public int getId() {
+        return id;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMessage() {
@@ -57,5 +59,36 @@ public class Comment {
 
     public void setReplies(List<Comment> replies) {
         this.replies = replies;
+    }
+
+    public static class Builder {
+        private String message;
+        private LocalDateTime timestamp;
+        private Comment parent;
+        private List<Comment> replies;
+
+        public Builder setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder setTimestamp(LocalDateTime timestamp) {
+            this.timestamp = timestamp;
+            return this;
+        }
+
+        public Builder setParent(Comment parent) {
+            this.parent = parent;
+            return this;
+        }
+
+        public Builder setReplies(List<Comment> replies) {
+            this.replies = replies;
+            return this;
+        }
+
+        public Comment build() {
+            return new Comment(this);
+        }
     }
 }

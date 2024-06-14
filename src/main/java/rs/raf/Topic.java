@@ -27,4 +27,23 @@ public class Topic {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public static class Builder {
+        private String title;
+        private List<Comment> comments;
+
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setComments(List<Comment> comments) {
+            this.comments = comments;
+            return this;
+        }
+
+        public Topic build() {
+            return new Topic(title, comments);
+        }
+    }
 }
