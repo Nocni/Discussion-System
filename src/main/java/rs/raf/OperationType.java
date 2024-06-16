@@ -1,0 +1,11 @@
+package rs.raf;
+
+public enum OperationType {
+    SEND_NEW_TOPIC,
+    SEND_NEW_COMMENT_TO_TOPIC,
+    REPLY_TO_COMMENT,
+    UPDATE_MY_COMMENT,
+    DELETE_MY_COMMENT,
+    GET_TOPICS_LIST,
+    GET_TOPIC_COMMENTS
+}

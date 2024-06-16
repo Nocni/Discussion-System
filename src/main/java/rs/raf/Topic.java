@@ -1,8 +1,9 @@
 package rs.raf;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Topic {
+public class Topic implements Serializable {
 
     private String title;
     private List<Comment> comments;
