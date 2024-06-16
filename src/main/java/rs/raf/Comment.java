@@ -8,7 +8,7 @@ public class Comment implements Serializable {
 
     private static int counter = 0;
 
-    private int id;
+    private final int id;
     private String message;
     private LocalDateTime timestamp;
     private Comment parent;
@@ -24,10 +24,6 @@ public class Comment implements Serializable {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getMessage() {

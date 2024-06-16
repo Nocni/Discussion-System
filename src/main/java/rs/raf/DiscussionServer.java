@@ -9,23 +9,12 @@ import com.alipay.sofa.jraft.rpc.RaftRpcServerFactory;
 import com.alipay.sofa.jraft.rpc.RpcServer;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.stub.StreamObserver;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import rs.raf.grpc.*;
-import rs.raf.grpc.DiscussionGrpc.DiscussionImplBase;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DiscussionServer {
 
@@ -72,8 +61,8 @@ public class DiscussionServer {
         return stateMachine;
     }
 
-    public void startGrpcServer() throws IOException {
-        this.grpcServer = ServerBuilder.forPort(50051) // Choose an appropriate port
+    public void startGrpcServer(int port) throws IOException {
+        this.grpcServer = ServerBuilder.forPort(port)
                 .addService(new DiscussionService(this))
                 .build()
                 .start();
@@ -86,7 +75,7 @@ public class DiscussionServer {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        if (args.length != 4) {
+        if (args.length != 5) {
             System.out
                     .println("Useage : java rs.raf.DiscussionServer {dataPath} {groupId} {serverId} {initConf}");
             System.out
@@ -97,7 +86,7 @@ public class DiscussionServer {
         System.out.println("Started Discussion server at port:"
                 + discussionServer.getNode().getNodeId().getPeerId().getPort());
 
-        discussionServer.startGrpcServer();
+        discussionServer.startGrpcServer(Integer.parseInt(args[4]));
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Kontrolisan shutdown!");
@@ -137,7 +126,6 @@ public class DiscussionServer {
         nodeOptions.setInitialConf(initConf);
 
         // 启动
-        final DiscussionServer discussionServer = new DiscussionServer(dataPath, groupId, serverId, nodeOptions);
-        return discussionServer;
+        return new DiscussionServer(dataPath, groupId, serverId, nodeOptions);
     }
 }
