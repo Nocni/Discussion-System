@@ -19,6 +19,8 @@ service Discussion {
   rpc GetTopicsList (TopicsRequest) returns (TopicsResponse) {}
 
   rpc GetTopicComments (TopicCommentsRequest) returns (TopicCommentsResponse) {}
+
+  rpc GetRandomCommentId (TopicCommentsRequest) returns (TopicCommentsResponse) {}
 }
 
 message NewTopicRequest {

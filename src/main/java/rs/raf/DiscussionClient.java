@@ -7,23 +7,31 @@ import com.alipay.sofa.jraft.option.CliOptions;
 import com.alipay.sofa.jraft.rpc.impl.cli.CliClientServiceImpl;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 import rs.raf.grpc.*;
 
+import java.awt.*;
+import java.awt.List;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeoutException;
 
 public class DiscussionClient {
     private final DiscussionGrpc.DiscussionBlockingStub blockingStub;
+    private final DiscussionGrpc.DiscussionStub asyncStub;
+
+    private ArrayList<Integer> commentIds = new ArrayList<>();
 
     public DiscussionClient(ManagedChannel channel) {
         this.blockingStub = DiscussionGrpc.newBlockingStub(channel);
+        this.asyncStub = DiscussionGrpc.newStub(channel);
     }
 
     public static void main(String[] args) throws InterruptedException, TimeoutException, UnknownHostException {
@@ -65,19 +73,19 @@ public class DiscussionClient {
         for (int i = 0; i < n; i++) {
             System.out.println("Operation " + i);
             client.sendNewTopic("New Topic " + i, "This is the first comment in the new topic " + i);
-            client.sendNewCommentToTopic("Existing Topic", "This is a new comment in the existing topic " + i);
+            client.sendNewCommentToTopic("New Topic 0", "This is a new comment in the existing topic " + i);
             client.getTopicsList();
             client.getTopicComments("New Topic 0");
-            client.replyToComment("Existing Topic", "This is a reply to a comment in the existing topic " + i, i);
-            client.updateMyComment("Existing Topic", "This is an updated comment in the existing topic " + i, i);
-            client.deleteMyComment("Existing Topic", i);
+            client.replyToComment("New Topic 0", "This is a reply to a comment in the existing topic " + i, client.getRandomCommentId());
+            client.updateMyComment("New Topic 0", "This is an updated comment in the existing topic " + i, client.getRandomCommentId());
+            client.deleteMyComment("New Topic 0", client.getRandomCommentId());
             System.out.println("Operation " + i + " done.");
             Thread.sleep(200);
             System.out.println("Operation " + i + " done.");
         }
         System.out.println("Operations done.");
         client.getTopicsList();
-        client.getTopicComments("New Topic 0");
+        client.getTopicComments("New Topic 5");
         latch.await();
         System.out.println(n + " ops, cost : " + (System.currentTimeMillis() - start) + " ms.");
         System.exit(0);
@@ -114,8 +122,22 @@ public class DiscussionClient {
                 .setMessage(message)
                 .setParentCommentId(parentCommentId)
                 .build();
-        Response response = blockingStub.replyToComment(request);
-        System.out.println(response.getResponse());
+        asyncStub.replyToComment(request, new StreamObserver<Response>() {
+            @Override
+            public void onNext(Response response) {
+                System.out.println(response.getResponse());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                System.out.println("gRPC call failed: " + Status.fromThrowable(t));
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("Reply sent");
+            }
+        });
     }
 
     public void updateMyComment(String topic, String message, int commentId) {
@@ -124,8 +146,22 @@ public class DiscussionClient {
                 .setMessage(message)
                 .setCommentId(commentId)
                 .build();
-        Response response = blockingStub.updateMyComment(request);
-        System.out.println(response.getResponse());
+        asyncStub.updateMyComment(request, new StreamObserver<Response>() {
+            @Override
+            public void onNext(Response response) {
+                System.out.println(response.getResponse());
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                System.out.println("gRPC call failed: " + Status.fromThrowable(t));
+            }
+
+            @Override
+            public void onCompleted() {
+                System.out.println("Comment updated");
+            }
+        });
     }
 
     public void deleteMyComment(String topic, int commentId) {
@@ -156,4 +192,25 @@ public class DiscussionClient {
             System.out.println("Comment ID: " + comment.getCommentId() + ", Message: " + comment.getMessage());
         }
     }
+
+    public int getRandomCommentId() {
+        TopicCommentsRequest request = TopicCommentsRequest.newBuilder()
+                .setTopic("New Topic 0")
+                .build();
+        TopicCommentsResponse response = blockingStub.getTopicComments(request);
+        System.out.println("Comments");
+        for (CommentResponse comment : response.getCommentsList()) {
+            commentIds.add(comment.getCommentId());
+            System.out.println("Comment ID: " + comment.getCommentId() + ", Message: " + comment.getMessage());
+        }
+        if (commentIds.isEmpty()) {
+            throw new IllegalStateException("No comments available");
+        }
+
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(commentIds.size());
+
+        return commentIds.get(randomIndex);
+    }
+
 }

@@ -232,6 +232,37 @@ public final class DiscussionGrpc {
     return getGetTopicCommentsMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<rs.raf.grpc.TopicCommentsRequest,
+      rs.raf.grpc.TopicCommentsResponse> getGetRandomCommentIdMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetRandomCommentId",
+      requestType = rs.raf.grpc.TopicCommentsRequest.class,
+      responseType = rs.raf.grpc.TopicCommentsResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<rs.raf.grpc.TopicCommentsRequest,
+      rs.raf.grpc.TopicCommentsResponse> getGetRandomCommentIdMethod() {
+    io.grpc.MethodDescriptor<rs.raf.grpc.TopicCommentsRequest, rs.raf.grpc.TopicCommentsResponse> getGetRandomCommentIdMethod;
+    if ((getGetRandomCommentIdMethod = DiscussionGrpc.getGetRandomCommentIdMethod) == null) {
+      synchronized (DiscussionGrpc.class) {
+        if ((getGetRandomCommentIdMethod = DiscussionGrpc.getGetRandomCommentIdMethod) == null) {
+          DiscussionGrpc.getGetRandomCommentIdMethod = getGetRandomCommentIdMethod =
+              io.grpc.MethodDescriptor.<rs.raf.grpc.TopicCommentsRequest, rs.raf.grpc.TopicCommentsResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetRandomCommentId"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rs.raf.grpc.TopicCommentsRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  rs.raf.grpc.TopicCommentsResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new DiscussionMethodDescriptorSupplier("GetRandomCommentId"))
+              .build();
+        }
+      }
+    }
+    return getGetRandomCommentIdMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -329,6 +360,13 @@ public final class DiscussionGrpc {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTopicCommentsMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getRandomCommentId(rs.raf.grpc.TopicCommentsRequest request,
+        io.grpc.stub.StreamObserver<rs.raf.grpc.TopicCommentsResponse> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetRandomCommentIdMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -380,6 +418,13 @@ public final class DiscussionGrpc {
                 rs.raf.grpc.TopicCommentsRequest,
                 rs.raf.grpc.TopicCommentsResponse>(
                   this, METHODID_GET_TOPIC_COMMENTS)))
+          .addMethod(
+            getGetRandomCommentIdMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.TopicCommentsRequest,
+                rs.raf.grpc.TopicCommentsResponse>(
+                  this, METHODID_GET_RANDOM_COMMENT_ID)))
           .build();
     }
   }
@@ -453,6 +498,14 @@ public final class DiscussionGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getGetTopicCommentsMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getRandomCommentId(rs.raf.grpc.TopicCommentsRequest request,
+        io.grpc.stub.StreamObserver<rs.raf.grpc.TopicCommentsResponse> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getGetRandomCommentIdMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -516,6 +569,13 @@ public final class DiscussionGrpc {
     public rs.raf.grpc.TopicCommentsResponse getTopicComments(rs.raf.grpc.TopicCommentsRequest request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getGetTopicCommentsMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public rs.raf.grpc.TopicCommentsResponse getRandomCommentId(rs.raf.grpc.TopicCommentsRequest request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getGetRandomCommentIdMethod(), getCallOptions(), request);
     }
   }
 
@@ -588,6 +648,14 @@ public final class DiscussionGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getGetTopicCommentsMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<rs.raf.grpc.TopicCommentsResponse> getRandomCommentId(
+        rs.raf.grpc.TopicCommentsRequest request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getGetRandomCommentIdMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SEND_NEW_TOPIC = 0;
@@ -597,6 +665,7 @@ public final class DiscussionGrpc {
   private static final int METHODID_DELETE_MY_COMMENT = 4;
   private static final int METHODID_GET_TOPICS_LIST = 5;
   private static final int METHODID_GET_TOPIC_COMMENTS = 6;
+  private static final int METHODID_GET_RANDOM_COMMENT_ID = 7;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -641,6 +710,10 @@ public final class DiscussionGrpc {
           break;
         case METHODID_GET_TOPIC_COMMENTS:
           serviceImpl.getTopicComments((rs.raf.grpc.TopicCommentsRequest) request,
+              (io.grpc.stub.StreamObserver<rs.raf.grpc.TopicCommentsResponse>) responseObserver);
+          break;
+        case METHODID_GET_RANDOM_COMMENT_ID:
+          serviceImpl.getRandomCommentId((rs.raf.grpc.TopicCommentsRequest) request,
               (io.grpc.stub.StreamObserver<rs.raf.grpc.TopicCommentsResponse>) responseObserver);
           break;
         default:
@@ -711,6 +784,7 @@ public final class DiscussionGrpc {
               .addMethod(getDeleteMyCommentMethod())
               .addMethod(getGetTopicsListMethod())
               .addMethod(getGetTopicCommentsMethod())
+              .addMethod(getGetRandomCommentIdMethod())
               .build();
         }
       }

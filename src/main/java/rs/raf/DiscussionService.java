@@ -45,7 +45,7 @@ public class DiscussionService extends DiscussionImplBase {
 
         Comment comment = new Comment.Builder()
                 .setMessage(request.getComment())
-                .setTimestamp(LocalDateTime.now())
+                .setTimestamp(String.valueOf(LocalDateTime.now()))
                 .setParent(null)
                 .setReplies(new ArrayList<>())
                 .build();
@@ -75,7 +75,7 @@ public class DiscussionService extends DiscussionImplBase {
 
     private void executeOperation(Operation operation, Closure closure) {
         try {
-            Task task = new Task();
+            final Task task = new Task();
             task.setData(ByteBuffer.wrap(SerializerManager.getSerializer(SerializerManager.Hessian2).serialize(operation)));
             task.setDone(closure);
             this.discussionServer.getNode().apply(task);
@@ -91,7 +91,7 @@ public class DiscussionService extends DiscussionImplBase {
         String topicTitle = request.getTopic();
         Comment comment = new Comment.Builder()
                 .setMessage(request.getMessage())
-                .setTimestamp(LocalDateTime.now())
+                .setTimestamp(String.valueOf(LocalDateTime.now()))
                 .setParent(null)
                 .setReplies(new ArrayList<>())
                 .build();
@@ -122,7 +122,7 @@ public class DiscussionService extends DiscussionImplBase {
         int parentCommentId = request.getParentCommentId();
         Comment reply = new Comment.Builder()
                 .setMessage(request.getMessage())
-                .setTimestamp(LocalDateTime.now())
+                .setTimestamp(String.valueOf(LocalDateTime.now()))
                 .setParent(discussionServer.getStateMachine().getCommentById(parentCommentId))
                 .setReplies(new ArrayList<>())
                 .build();
@@ -258,6 +258,26 @@ public class DiscussionService extends DiscussionImplBase {
                 CommentResponse commentResponse = CommentResponse.newBuilder()
                         .setMessage(comment.getMessage())
                         .setCommentId(comment.getId())
+                        .build();
+                responseBuilder.addComments(commentResponse);
+            }
+
+            responseObserver.onNext(responseBuilder.build());
+            responseObserver.onCompleted();
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public void getRandomCommentId(TopicCommentsRequest request, StreamObserver<TopicCommentsResponse> responseObserver) {
+        lock.readLock().lock();
+        try {
+            TopicCommentsResponse.Builder responseBuilder = TopicCommentsResponse.newBuilder();
+            for (Integer comment : discussionServer.getStateMachine().getCommentIds()) {
+                CommentResponse commentResponse = CommentResponse.newBuilder()
+                        .setMessage("Comment ID: " + comment)
+                        .setCommentId(comment)
                         .build();
                 responseBuilder.addComments(commentResponse);
             }

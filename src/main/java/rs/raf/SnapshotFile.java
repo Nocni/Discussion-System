@@ -31,19 +31,6 @@ public class SnapshotFile {
         }
     }
 
-    public void saveSnapshotWithHessian(StateMachineSnapshot snapshot, OutputStream os) throws IOException {
-        Hessian2Output out = new Hessian2Output(os);
-        out.writeObject(snapshot);
-        out.close();
-    }
-
-    public StateMachineSnapshot loadSnapshotWithHessian(InputStream is) throws IOException {
-        Hessian2Input in = new Hessian2Input(is);
-        StateMachineSnapshot snapshot = (StateMachineSnapshot) in.readObject();
-        in.close();
-        return snapshot;
-    }
-
     public String getPath() {
         return path;
     }

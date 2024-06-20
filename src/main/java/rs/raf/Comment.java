@@ -2,6 +2,7 @@ package rs.raf;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Comment implements Serializable {
@@ -10,7 +11,7 @@ public class Comment implements Serializable {
 
     private final int id;
     private String message;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private Comment parent;
     private List<Comment> replies;
 
@@ -35,11 +36,11 @@ public class Comment implements Serializable {
     }
 
     public LocalDateTime getTimestamp() {
-        return timestamp;
+        return LocalDateTime.parse(this.timestamp, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = timestamp.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public Comment getParent() {
@@ -60,7 +61,7 @@ public class Comment implements Serializable {
 
     public static class Builder {
         private String message;
-        private LocalDateTime timestamp;
+        private String timestamp;
         private Comment parent;
         private List<Comment> replies;
 
@@ -69,7 +70,7 @@ public class Comment implements Serializable {
             return this;
         }
 
-        public Builder setTimestamp(LocalDateTime timestamp) {
+        public Builder setTimestamp(String timestamp) {
             this.timestamp = timestamp;
             return this;
         }

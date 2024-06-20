@@ -93,7 +93,7 @@ public final class DiscussionServiceProto {
       "\022\r\n\005topic\030\001 \001(\t\"5\n\017CommentResponse\022\017\n\007me" +
       "ssage\030\001 \001(\t\022\021\n\tcommentId\030\002 \001(\005\";\n\025TopicC" +
       "ommentsResponse\022\"\n\010comments\030\001 \003(\0132\020.Comm" +
-      "entResponse2\221\003\n\nDiscussion\022-\n\014SendNewTop" +
+      "entResponse2\330\003\n\nDiscussion\022-\n\014SendNewTop" +
       "ic\022\020.NewTopicRequest\032\t.Response\"\000\0228\n\025Sen" +
       "dNewCommentToTopic\022\022.NewCommentRequest\032\t" +
       ".Response\"\000\0223\n\016ReplyToComment\022\024.CommentR" +
@@ -103,8 +103,10 @@ public final class DiscussionServiceProto {
       "t\032\t.Response\"\000\0222\n\rGetTopicsList\022\016.Topics" +
       "Request\032\017.TopicsResponse\"\000\022C\n\020GetTopicCo" +
       "mments\022\025.TopicCommentsRequest\032\026.TopicCom" +
-      "mentsResponse\"\000B-\n\013rs.raf.grpcB\026Discussi" +
-      "onServiceProtoP\001\242\002\003HLWb\006proto3"
+      "mentsResponse\"\000\022E\n\022GetRandomCommentId\022\025." +
+      "TopicCommentsRequest\032\026.TopicCommentsResp" +
+      "onse\"\000B-\n\013rs.raf.grpcB\026DiscussionService" +
+      "ProtoP\001\242\002\003HLWb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
