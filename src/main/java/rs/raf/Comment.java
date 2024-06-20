@@ -15,7 +15,7 @@ public class Comment implements Serializable {
     private List<Comment> replies;
 
     public Comment(Builder builder) {
-        this.id = ++counter;
+        this.id = counter++;
         this.message = builder.message;
         this.timestamp = builder.timestamp;
         this.parent = builder.parent;

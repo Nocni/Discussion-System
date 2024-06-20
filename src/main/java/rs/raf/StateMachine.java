@@ -77,27 +77,38 @@ public class StateMachine extends StateMachineAdapter {
         while (iter.hasNext()) {
             ByteBuffer buffer = iter.next();
             Operation operation = null;
+            System.out.println("Operation received: \n" + buffer);
             try {
+                System.out.println("Operation received: \n" + buffer);
                 byte[] bytes = new byte[buffer.remaining()];
                 buffer.get(bytes);
+                System.out.println("Operation received: \n" + bytes);
 
                 ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
                 ObjectInputStream ois = new ObjectInputStream(bis);
+                System.out.println("ObjectInputStream created");
                 operation = (Operation) ois.readObject();
+                System.out.println("Operation type: " + operation.getOperationType() + " received");
+                System.out.println("Operation data: " + operation.toString());
             } catch (IOException | ClassNotFoundException e) {
                 LOG.error("Error during operation deserialization", e);
+                e.printStackTrace();
+                System.out.println("Error during operation deserialization");
             }
 
             if (operation != null) {
+                System.out.println("Operation not null");
                 OperationType operationType = operation.getOperationType();
 
                 switch (operationType) {
                     case SEND_NEW_TOPIC:
+                        System.out.println("SEND_NEW_TOPIC");
                         Topic newTopic = operation.getTopic();
                         Comment firstComment = operation.getComment();
                         if (newTopic != null && firstComment != null) {
                             topics.add(newTopic);
                             newTopic.getComments().add(firstComment);
+                            System.out.println("New topic added: " + newTopic.getTitle() + " with first comment: " + firstComment.getMessage());
                         } else {
                             System.err.println("Invalid operation data for SEND_NEW_TOPIC. Expected a Topic object.");
                         }

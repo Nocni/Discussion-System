@@ -5,14 +5,14 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.62.2)",
+    value = "by gRPC proto compiler (version 1.45.1)",
     comments = "Source: discussion.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class DiscussionGrpc {
 
   private DiscussionGrpc() {}
 
-  public static final java.lang.String SERVICE_NAME = "Discussion";
+  public static final String SERVICE_NAME = "Discussion";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<rs.raf.grpc.NewTopicRequest,
@@ -278,74 +278,115 @@ public final class DiscussionGrpc {
 
   /**
    */
-  public interface AsyncService {
+  public static abstract class DiscussionImplBase implements io.grpc.BindableService {
 
     /**
      */
-    default void sendNewTopic(rs.raf.grpc.NewTopicRequest request,
+    public void sendNewTopic(rs.raf.grpc.NewTopicRequest request,
         io.grpc.stub.StreamObserver<rs.raf.grpc.Response> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSendNewTopicMethod(), responseObserver);
     }
 
     /**
      */
-    default void sendNewCommentToTopic(rs.raf.grpc.NewCommentRequest request,
+    public void sendNewCommentToTopic(rs.raf.grpc.NewCommentRequest request,
         io.grpc.stub.StreamObserver<rs.raf.grpc.Response> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getSendNewCommentToTopicMethod(), responseObserver);
     }
 
     /**
      */
-    default void replyToComment(rs.raf.grpc.CommentReplyRequest request,
+    public void replyToComment(rs.raf.grpc.CommentReplyRequest request,
         io.grpc.stub.StreamObserver<rs.raf.grpc.Response> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getReplyToCommentMethod(), responseObserver);
     }
 
     /**
      */
-    default void updateMyComment(rs.raf.grpc.CommentUpdateRequest request,
+    public void updateMyComment(rs.raf.grpc.CommentUpdateRequest request,
         io.grpc.stub.StreamObserver<rs.raf.grpc.Response> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getUpdateMyCommentMethod(), responseObserver);
     }
 
     /**
      */
-    default void deleteMyComment(rs.raf.grpc.CommentDeleteRequest request,
+    public void deleteMyComment(rs.raf.grpc.CommentDeleteRequest request,
         io.grpc.stub.StreamObserver<rs.raf.grpc.Response> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getDeleteMyCommentMethod(), responseObserver);
     }
 
     /**
      */
-    default void getTopicsList(rs.raf.grpc.TopicsRequest request,
+    public void getTopicsList(rs.raf.grpc.TopicsRequest request,
         io.grpc.stub.StreamObserver<rs.raf.grpc.TopicsResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTopicsListMethod(), responseObserver);
     }
 
     /**
      */
-    default void getTopicComments(rs.raf.grpc.TopicCommentsRequest request,
+    public void getTopicComments(rs.raf.grpc.TopicCommentsRequest request,
         io.grpc.stub.StreamObserver<rs.raf.grpc.TopicCommentsResponse> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getGetTopicCommentsMethod(), responseObserver);
     }
-  }
-
-  /**
-   * Base class for the server implementation of the service Discussion.
-   */
-  public static abstract class DiscussionImplBase
-      implements io.grpc.BindableService, AsyncService {
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return DiscussionGrpc.bindService(this);
+      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+          .addMethod(
+            getSendNewTopicMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.NewTopicRequest,
+                rs.raf.grpc.Response>(
+                  this, METHODID_SEND_NEW_TOPIC)))
+          .addMethod(
+            getSendNewCommentToTopicMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.NewCommentRequest,
+                rs.raf.grpc.Response>(
+                  this, METHODID_SEND_NEW_COMMENT_TO_TOPIC)))
+          .addMethod(
+            getReplyToCommentMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.CommentReplyRequest,
+                rs.raf.grpc.Response>(
+                  this, METHODID_REPLY_TO_COMMENT)))
+          .addMethod(
+            getUpdateMyCommentMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.CommentUpdateRequest,
+                rs.raf.grpc.Response>(
+                  this, METHODID_UPDATE_MY_COMMENT)))
+          .addMethod(
+            getDeleteMyCommentMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.CommentDeleteRequest,
+                rs.raf.grpc.Response>(
+                  this, METHODID_DELETE_MY_COMMENT)))
+          .addMethod(
+            getGetTopicsListMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.TopicsRequest,
+                rs.raf.grpc.TopicsResponse>(
+                  this, METHODID_GET_TOPICS_LIST)))
+          .addMethod(
+            getGetTopicCommentsMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                rs.raf.grpc.TopicCommentsRequest,
+                rs.raf.grpc.TopicCommentsResponse>(
+                  this, METHODID_GET_TOPIC_COMMENTS)))
+          .build();
     }
   }
 
   /**
-   * A stub to allow clients to do asynchronous rpc calls to service Discussion.
    */
-  public static final class DiscussionStub
-      extends io.grpc.stub.AbstractAsyncStub<DiscussionStub> {
+  public static final class DiscussionStub extends io.grpc.stub.AbstractAsyncStub<DiscussionStub> {
     private DiscussionStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -415,10 +456,8 @@ public final class DiscussionGrpc {
   }
 
   /**
-   * A stub to allow clients to do synchronous rpc calls to service Discussion.
    */
-  public static final class DiscussionBlockingStub
-      extends io.grpc.stub.AbstractBlockingStub<DiscussionBlockingStub> {
+  public static final class DiscussionBlockingStub extends io.grpc.stub.AbstractBlockingStub<DiscussionBlockingStub> {
     private DiscussionBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -481,10 +520,8 @@ public final class DiscussionGrpc {
   }
 
   /**
-   * A stub to allow clients to do ListenableFuture-style rpc calls to service Discussion.
    */
-  public static final class DiscussionFutureStub
-      extends io.grpc.stub.AbstractFutureStub<DiscussionFutureStub> {
+  public static final class DiscussionFutureStub extends io.grpc.stub.AbstractFutureStub<DiscussionFutureStub> {
     private DiscussionFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -566,10 +603,10 @@ public final class DiscussionGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final AsyncService serviceImpl;
+    private final DiscussionImplBase serviceImpl;
     private final int methodId;
 
-    MethodHandlers(AsyncService serviceImpl, int methodId) {
+    MethodHandlers(DiscussionImplBase serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -622,60 +659,6 @@ public final class DiscussionGrpc {
     }
   }
 
-  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
-    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-        .addMethod(
-          getSendNewTopicMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              rs.raf.grpc.NewTopicRequest,
-              rs.raf.grpc.Response>(
-                service, METHODID_SEND_NEW_TOPIC)))
-        .addMethod(
-          getSendNewCommentToTopicMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              rs.raf.grpc.NewCommentRequest,
-              rs.raf.grpc.Response>(
-                service, METHODID_SEND_NEW_COMMENT_TO_TOPIC)))
-        .addMethod(
-          getReplyToCommentMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              rs.raf.grpc.CommentReplyRequest,
-              rs.raf.grpc.Response>(
-                service, METHODID_REPLY_TO_COMMENT)))
-        .addMethod(
-          getUpdateMyCommentMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              rs.raf.grpc.CommentUpdateRequest,
-              rs.raf.grpc.Response>(
-                service, METHODID_UPDATE_MY_COMMENT)))
-        .addMethod(
-          getDeleteMyCommentMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              rs.raf.grpc.CommentDeleteRequest,
-              rs.raf.grpc.Response>(
-                service, METHODID_DELETE_MY_COMMENT)))
-        .addMethod(
-          getGetTopicsListMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              rs.raf.grpc.TopicsRequest,
-              rs.raf.grpc.TopicsResponse>(
-                service, METHODID_GET_TOPICS_LIST)))
-        .addMethod(
-          getGetTopicCommentsMethod(),
-          io.grpc.stub.ServerCalls.asyncUnaryCall(
-            new MethodHandlers<
-              rs.raf.grpc.TopicCommentsRequest,
-              rs.raf.grpc.TopicCommentsResponse>(
-                service, METHODID_GET_TOPIC_COMMENTS)))
-        .build();
-  }
-
   private static abstract class DiscussionBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
     DiscussionBaseDescriptorSupplier() {}
@@ -699,9 +682,9 @@ public final class DiscussionGrpc {
   private static final class DiscussionMethodDescriptorSupplier
       extends DiscussionBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final java.lang.String methodName;
+    private final String methodName;
 
-    DiscussionMethodDescriptorSupplier(java.lang.String methodName) {
+    DiscussionMethodDescriptorSupplier(String methodName) {
       this.methodName = methodName;
     }
 

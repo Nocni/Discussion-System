@@ -50,15 +50,15 @@ public class DiscussionServer {
     }
 
     public RaftGroupService getRaftGroupService() {
-        return raftGroupService;
+        return this.raftGroupService;
     }
 
     public Node getNode() {
-        return node;
+        return this.node;
     }
 
     public StateMachine getStateMachine() {
-        return stateMachine;
+        return this.stateMachine;
     }
 
     public void startGrpcServer(int port) throws IOException {
@@ -87,6 +87,7 @@ public class DiscussionServer {
                 + discussionServer.getNode().getNodeId().getPeerId().getPort());
 
         discussionServer.startGrpcServer(Integer.parseInt(args[4]));
+        System.out.println("Started gRPC server at port:" + args[4]);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Kontrolisan shutdown!");

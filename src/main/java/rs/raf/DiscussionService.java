@@ -54,12 +54,15 @@ public class DiscussionService extends DiscussionImplBase {
             Operation operation = new Operation(OperationType.SEND_NEW_TOPIC, topic, comment);
 
             Closure closure = status -> {
+                System.out.println("Inside closure");
                 if (status.isOk()) {
+                    System.out.println("Status is OK");
                     Response response = Response.newBuilder()
                             .setResponse("Operation successful")
                             .build();
                     responseObserver.onNext(response);
                     responseObserver.onCompleted();
+                    System.out.println(response.getResponse() + " " + responseObserver);
                 } else {
                     System.err.println("An error occurred while adding a topic: " + status.getErrorMsg());
                 }
@@ -72,7 +75,10 @@ public class DiscussionService extends DiscussionImplBase {
 
     private void executeOperation(Operation operation, Closure closure) {
         try {
-            discussionServer.getNode().apply(new Task(ByteBuffer.wrap(SerializerManager.getSerializer(SerializerManager.Hessian2).serialize(operation)), closure, -1));
+            Task task = new Task();
+            task.setData(ByteBuffer.wrap(SerializerManager.getSerializer(SerializerManager.Hessian2).serialize(operation)));
+            task.setDone(closure);
+            this.discussionServer.getNode().apply(task);
         } catch (CodecException e) {
             String errorMsg = "Fail to encode Operation";
             LOG.error(errorMsg, e);
