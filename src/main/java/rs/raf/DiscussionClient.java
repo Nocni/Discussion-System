@@ -51,15 +51,11 @@ public class DiscussionClient {
         }
 
         final PeerId leader = RouteTable.getInstance().selectLeader(groupId);
-        System.out.println("Leader is " + leader);
 
         InetAddress leaderAddr = InetAddress.getByName(leader.getEndpoint().getIp());
         ManagedChannel grpcChannel = ManagedChannelBuilder.forAddress("127.0.0.1", leader.getPort()-6)
                 .usePlaintext()
                 .build();
-
-        System.out.println(leaderAddr + " " + leader.getPort() + " " + leader.getEndpoint().getPort() + " " + leader.getEndpoint().getIp() + " " + leader.getEndpoint().getPort());
-        System.out.println(grpcChannel);
 
         DiscussionClient client = new DiscussionClient(grpcChannel);
 

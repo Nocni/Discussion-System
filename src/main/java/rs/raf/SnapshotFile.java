@@ -1,5 +1,8 @@
 package rs.raf;
 
+import com.caucho.hessian.io.Hessian2Input;
+import com.caucho.hessian.io.Hessian2Output;
+
 import java.io.*;
 
 public class SnapshotFile {
@@ -26,6 +29,19 @@ public class SnapshotFile {
             System.err.println("Failed to load snapshot: " + e.getMessage());
             return null;
         }
+    }
+
+    public void saveSnapshotWithHessian(StateMachineSnapshot snapshot, OutputStream os) throws IOException {
+        Hessian2Output out = new Hessian2Output(os);
+        out.writeObject(snapshot);
+        out.close();
+    }
+
+    public StateMachineSnapshot loadSnapshotWithHessian(InputStream is) throws IOException {
+        Hessian2Input in = new Hessian2Input(is);
+        StateMachineSnapshot snapshot = (StateMachineSnapshot) in.readObject();
+        in.close();
+        return snapshot;
     }
 
     public String getPath() {

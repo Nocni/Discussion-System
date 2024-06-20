@@ -10,6 +10,7 @@ import com.alipay.sofa.jraft.storage.snapshot.SnapshotReader;
 import com.alipay.sofa.jraft.storage.snapshot.SnapshotWriter;
 import com.alipay.sofa.jraft.util.NamedThreadFactory;
 import com.alipay.sofa.jraft.util.ThreadPoolUtil;
+import com.caucho.hessian.io.Hessian2Input;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,24 +74,20 @@ public class StateMachine extends StateMachineAdapter {
     }
 
     @Override
-    public void onApply(Iterator iter) {
+    public void onApply(final Iterator iter) {
         while (iter.hasNext()) {
             ByteBuffer buffer = iter.next();
             Operation operation = null;
             System.out.println("Operation received: \n" + buffer);
             try {
                 System.out.println("Operation received: \n" + buffer);
-                byte[] bytes = new byte[buffer.remaining()];
-                buffer.get(bytes);
-                System.out.println("Operation received: \n" + bytes);
-
+                byte[] bytes = new byte[buffer.remaining()]; // the byte array
                 ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                ObjectInputStream ois = new ObjectInputStream(bis);
-                System.out.println("ObjectInputStream created");
-                operation = (Operation) ois.readObject();
-                System.out.println("Operation type: " + operation.getOperationType() + " received");
-                System.out.println("Operation data: " + operation.toString());
-            } catch (IOException | ClassNotFoundException e) {
+                Hessian2Input hin = new Hessian2Input(bis);
+                operation = (Operation) hin.readObject();
+                System.out.println("Operation received: \n" + operation);
+                hin.close();
+            } catch (IOException e) {
                 LOG.error("Error during operation deserialization", e);
                 e.printStackTrace();
                 System.out.println("Error during operation deserialization");
@@ -186,6 +183,8 @@ public class StateMachine extends StateMachineAdapter {
                         System.err.println("Unknown operation type: " + operationType);
                         break;
                 }
+            } else {
+                System.err.println("Operation is null");
             }
         }
     }
